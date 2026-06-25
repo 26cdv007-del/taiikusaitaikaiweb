@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>緑組 | 2026 体育祭</title>
+    <link rel="stylesheet" href="./common/css/ style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Zen+Antique+Soft&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --g-deep:#0e3a23;
+            --g-mid:#1f8a4c;
+            --g-bright:#3ddc84;
+            --g-glow:#a8f5cc;
+        }
+
+        .team-hero-page.green-hero{
+            background:
+                radial-gradient(circle at 80% 20%, rgba(168,245,204,.35), transparent 55%),
+                linear-gradient(160deg, var(--g-deep) 0%, var(--g-mid) 55%, var(--g-bright) 100%);
+            position:relative;
+            overflow:hidden;
+        }
+
+        /* Signature element: rising growth bars, like blades/sprouts climbing from the base */
+        .growth-field{
+            position:absolute;
+            inset:0;
+            display:flex;
+            align-items:flex-end;
+            justify-content:space-evenly;
+            padding:0 4%;
+            pointer-events:none;
+            z-index:0;
+        }
+        .growth-field .blade{
+            width:clamp(6px, 1vw, 14px);
+            background:linear-gradient(180deg, rgba(255,255,255,.05), var(--g-glow));
+            border-radius:40px 40px 0 0;
+            opacity:.35;
+            transform-origin:bottom center;
+            animation:sway 6s ease-in-out infinite, grow 1.8s ease-out forwards;
+        }
+        @keyframes grow{
+            from{ transform:scaleY(0); }
+            to{ transform:scaleY(1); }
+        }
+        @keyframes sway{
+            0%,100%{ transform:rotate(-2deg); }
+            50%{ transform:rotate(2deg); }
+        }
+
+        .hero-content.green-content{
+            position:relative;
+            z-index:2;
+        }
+        .hero-eyebrow.green-eyebrow{
+            display:inline-flex;
+            align-items:center;
+            gap:.5em;
+            letter-spacing:.18em;
+            color:var(--g-glow);
+        }
+        .hero-eyebrow.green-eyebrow::before{
+            content:"";
+            width:.5em;
+            height:.5em;
+            border-radius:50%;
+            background:var(--g-glow);
+            box-shadow:0 0 12px 2px var(--g-glow);
+            display:inline-block;
+        }
+
+        .team-hero-page.green-hero h1{
+            font-size:clamp(3.2rem, 9vw, 7rem);
+            font-weight:900;
+            letter-spacing:.04em;
+            background:linear-gradient(180deg,#ffffff 0%, var(--g-glow) 100%);
+            -webkit-background-clip:text;
+            background-clip:text;
+            color:transparent;
+            text-shadow:0 8px 30px rgba(0,0,0,.25);
+            margin-bottom:.1em;
+        }
+
+        .team-hero-page.green-hero p.tagline{
+            font-size:clamp(1.1rem, 2.2vw, 1.6rem);
+            color:#eafff3;
+            letter-spacing:.12em;
+            font-weight:500;
+        }
+
+        .growth-stats{
+            display:flex;
+            gap:2.5rem;
+            margin-top:2.2rem;
+            flex-wrap:wrap;
+        }
+        .growth-stats .stat{
+            text-align:left;
+            border-left:3px solid var(--g-glow);
+            padding-left:.9rem;
+        }
+        .growth-stats .stat .num{
+            font-size:clamp(1.6rem,3vw,2.4rem);
+            font-weight:800;
+            color:#fff;
+            line-height:1;
+        }
+        .growth-stats .stat .lab{
+            font-size:.8rem;
+            color:rgba(255,255,255,.75);
+            letter-spacing:.08em;
+        }
+
+        /* Content section refresh */
+        .content-section .green-panel{
+            display:grid;
+            grid-template-columns:1.1fr 1fr;
+            gap:2.5rem;
+            align-items:stretch;
+        }
+        @media (max-width:780px){
+            .content-section .green-panel{ grid-template-columns:1fr; }
+        }
+        .green-panel .img-wrap{
+            position:relative;
+            overflow:hidden;
+            border-radius:18px;
+            box-shadow:0 20px 50px -20px rgba(15,80,45,.45);
+        }
+        .green-panel .img-wrap::after{
+            content:"";
+            position:absolute;
+            inset:0;
+            background:linear-gradient(180deg, transparent 60%, rgba(14,58,35,.55) 100%);
+        }
+        .green-panel .img-wrap img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            display:block;
+        }
+        .green-panel .copy-card{
+            background:linear-gradient(155deg, #f3fff8, #e3f9ec);
+            border:1px solid #cdeedb;
+            border-radius:18px;
+            padding:2.2rem 2.4rem;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+        }
+        .green-panel .copy-card .kicker{
+            font-size:.78rem;
+            letter-spacing:.18em;
+            color:var(--g-mid);
+            font-weight:700;
+            margin-bottom:.6rem;
+        }
+        .green-panel .copy-card p{
+            color:#234634;
+            line-height:1.9;
+            font-size:1.02rem;
+        }
+        .green-panel .copy-card .motto{
+            margin-top:1.4rem;
+            font-weight:800;
+            font-size:1.3rem;
+            color:var(--g-deep);
+        }
+
+        /* reveal animation kept compatible with existing observer */
+        .content-section .reveal{
+            opacity:0;
+            transform:translateY(24px);
+            transition:opacity .7s ease, transform .7s ease;
+        }
+        .content-section .reveal.visible{
+            opacity:1;
+            transform:none;
+        }
+
+        /* --- Signature polish for GREEN, to match PINK's complexity --- */
+
+        .team-hero-page.green-hero .th-kanji{
+            position:absolute;
+            top:8%;
+            left:5%;
+            font-size:clamp(7rem, 22vw, 16rem);
+            font-family:"Shippori Mincho", serif;
+            color:rgba(255,255,255,.14);
+            line-height:1;
+            z-index:1;
+            animation:greenFloat 7s ease-in-out infinite, greenPulse 4s ease-in-out infinite;
+            will-change:transform, opacity;
+            pointer-events:none;
+        }
+        @keyframes greenFloat{
+            0%,100%{ transform:translateY(0); }
+            50%{ transform:translateY(-14px); }
+        }
+        @keyframes greenPulse{
+            0%,100%{ opacity:.9; }
+            50%{ opacity:.55; }
+        }
+
+        .green-panel .img-wrap{
+            transition:transform .5s ease;
+        }
+        .green-panel .img-wrap img{
+            transition:transform .5s ease;
+        }
+        .green-panel .img-wrap:hover img{
+            transform:scale(1.05);
+        }
+
+        .green-panel .copy-card .td-roster{
+            margin-top:1.4rem;
+            display:flex;
+            flex-direction:column;
+            gap:.6rem;
+        }
+        .green-panel .copy-card .td-tags{
+            margin-top:1.2rem;
+        }
+        .td-tag{
+            display:inline-block;
+            transition:transform .25s ease, box-shadow .25s ease;
+        }
+        .td-tag:hover{
+            transform:translateY(-3px);
+            box-shadow:0 8px 18px -10px var(--g-mid);
+        }
+
+        .stat-card .stat-fill{
+            width:0 !important;
+            transition:width 1.1s cubic-bezier(.22,.8,.32,1);
+        }
+        .stat-card.in-view .stat-row:nth-child(1) .stat-fill{ width:80%; }
+        .stat-card.in-view .stat-row:nth-child(2) .stat-fill{ width:78%; }
+        .stat-card.in-view .stat-row:nth-child(3) .stat-fill{ width:60%; }
+        .stat-card{
+            margin-top:1.6rem;
+            transition:transform .35s ease, box-shadow .35s ease;
+        }
+        .stat-card:hover{
+            transform:translateY(-4px);
+            box-shadow:0 14px 34px -16px rgba(31,138,76,.35);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+   <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="./index.html" class="logo">体育祭<span class="logo-num">2026</span></a>
+            <ul class="nav-links">
+                <li><a href="./index.html">ホーム</a></li>
+                <li><a href="./pink.html"><span class="nav-flag" style="background:var(--c-pink)"></span> ピンク組</a></li>
+                <li><a href="./blue.html"><span class="nav-flag" style="background:var(--c-green)"></span>青組</a></li>
+                <li><a href="./red.html"><span class="nav-flag" style="background:var(--c-red)"></span>赤組</a></li>
+            </ul>
+        </div>
+        <div class="lane-rule"><span class="l-pink"></span><span class="l-blue"></span><span class="l-green"></span><span class="l-red"></span></div>
+    </nav>
+</header>
+
+<section class="team-hero-page green-hero">
+    <span class="th-kanji">緑</span>
+    <div class="hero-overlay"></div>
+    <div class="growth-field" aria-hidden="true"></div>
+    <div class="hero-content green-content">
+        <span class="hero-eyebrow green-eyebrow">チーム紹介</span>
+        <h1>緑組</h1>
+        <p class="tagline">挑戦と成長</p>
+        <div class="growth-stats">
+            <div class="stat"><div class="num">No.3</div><div class="lab">エントリーチーム</div></div>
+            <div class="stat"><div class="num">∞</div><div class="lab">伸びしろ</div></div>
+        </div>
+        <div class="hero-buttons">
+            <a href="./index.html" class="btn-secondary">← ホームへ戻る</a>
+        </div>
+    </div>
+</section>
+
+<section class="content-section">
+    <div class="section-title reveal">
+        <h2>チーム紹介</h2>
+    </div>
+    <div class="content-box reveal">
+        <div class="green-panel">
+            <div>
+                <div class="img-wrap">
+                    <img src="./common/img/ greenteam.jpg" alt="緑組" class="section-img">
+                </div>
+                <div class="stat-card" id="greenStatCard">
+                    <span class="sc-title">TEAM DATA</span>
+                    <div class="stat-row">
+                        <div class="sr-top"><span>団結力</span><span class="sr-val">80</span></div>
+                        <div class="stat-track"><div class="stat-fill" style="background:var(--g-mid);"></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="sr-top"><span>瞬発力</span><span class="sr-val">78</span></div>
+                        <div class="stat-track"><div class="stat-fill" style="background:var(--g-mid);"></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="sr-top"><span>持久力</span><span class="sr-val">60</span></div>
+                        <div class="stat-track"><div class="stat-fill" style="background:var(--g-mid);"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="copy-card">
+                <span class="kicker">GREEN TEAM</span>
+                <p>（ここにチームの紹介文を入れてください）一歩ずつ着実に、芽が伸びるように力をつけていくチーム。練習を重ねるたびに強くなる姿が、緑組の象徴です。</p>
+                <div class="motto">育てよう、その先の景色を。</div>
+                <div class="td-roster">
+                    <div>
+                        <span class="r-label">団長 / CAPTAIN</span>
+                        <span class="r-value">（団長名）</span>
+                    </div>
+                    <div>
+                        <span class="r-label">副団長 / VICE CAPTAIN</span>
+                        <span class="r-value">カサンドラ-下田真音-堀英恵</span>
+                    </div>
+                </div>
+                <div class="td-tags">
+                    <span class="td-tag" style="color:var(--g-mid);">成長</span>
+                    <span class="td-tag" style="color:var(--g-mid);">挑戦</span>
+                    <span class="td-tag" style="color:var(--g-mid);">伸びしろNo.1</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="relay-pass">
+        <a href="./blue.html">
+            <span class="rp-dot" style="background:var(--ink-faint);"></span>
+            <span><span class="rp-tag">BACK</span>チーム一覧へ</span>
+        </a>
+        <a href="./red.html">
+            <span><span class="rp-tag">NEXT TEAM</span> 赤組へバトンタッチ</span>
+            <span class="rp-dot" style="background:var(--c-red);"></span>
+        </a>
+    </div>
+
+<footer>
+    <div class="footer-content">
+        <h3>2026 体育祭</h3>
+        <p>みんなで作る最高の一日</p>
+    </div>
+</footer>
+
+<script>
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+});
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Animate stat bars in once visible
+(function(){
+    const card = document.getElementById('greenStatCard');
+    if(!card) return;
+    const statObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if(e.isIntersecting){ card.classList.add('in-view'); statObserver.unobserve(card); }
+        });
+    }, { threshold: 0.3 });
+    statObserver.observe(card);
+})();
+
+// Build randomized growth blades for the hero background
+(function(){
+    const field = document.querySelector('.growth-field');
+    if(!field) return;
+    const count = 26;
+    for(let i=0;i<count;i++){
+        const blade = document.createElement('div');
+        blade.className = 'blade';
+        const h = 20 + Math.random()*70;
+        blade.style.height = h + '%';
+        blade.style.animationDelay = (Math.random()*1.2) + 's, ' + (Math.random()*1.2) + 's';
+        blade.style.animationDuration = (4 + Math.random()*3) + 's, 1.8s';
+        field.appendChild(blade);
+    }
+})();
+</script>
+
+</body>
+</html>
